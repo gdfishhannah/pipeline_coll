@@ -1,7 +1,8 @@
+name: github actions with modelarts demo
 on: [push]
 
 jobs:
-  obs_helper:
+  connect_to_hwcloud:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
