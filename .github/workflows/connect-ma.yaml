@@ -1,0 +1,34 @@
+name: Deploy Workflow to ModelArts
+
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  workflow_demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+    # 使用华为云命令行工具KooCLI
+      - name: List Versions of ECS With Default Region By KooCLI 
+        uses: huaweicloud/huaweicloud-cli-action@v1.0.1
+        with:
+          access_key: ${{ secrets.ACCESSKEY }}
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          region: 'cn-north-4'
+          commandList: 'hcloud ECS NovaListVersions'
+      
+      # 上传文件到华为云OBS
+      - name: Upload To HuaweiCloud OBS
+        uses: huaweicloud/obs-helper@v1.2.0
+        id: upload_file_to_obs
+        with:
+          access_key: ${{ secrets.ACCESSKEY }}
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          region: 'cn-north-4'
+          bucket_name: 'dxh'
+          local_file_path: 'training.py'
+          obs_file_path: 'obs://dxh/github-actions-demo'
+          operation_type: 'upload'
