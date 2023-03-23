@@ -33,6 +33,11 @@ jobs:
             ./util
             ./training.py
             ./workflow.py
-          obs_file_path: 'github-actions-demo'
+          obs_file_path: github-actions-demo
           operation_type: 'upload'
           include_self_folder: true
+
+      - name: Build and deploy model
+        run: |
+          cd requirements
+          pip install -r requirements.txt
