@@ -37,7 +37,7 @@ job_step = wf.steps.JobStep(
     algorithm=wf.BaseAlgorithm(
         code_dir="obs://{}/{}/".format(opt.obs_bucket_name, opt.project_name),
         command='python ${{MA_JOB_DIR}}/{}/training.py'.format(opt.project_name),
-        engine=wf.steps.JobEngine(image_url="ramseyyj/train-pytorch1.8.1-cuda10.2:v1.0"),
+        engine=wf.steps.JobEngine(image_url="hwstaff_maexp/torch1.8-dxh:v001"),
     ),
     inputs=[wf.steps.JobInput(name="data_url",
                               data=wf.data.OBSPlaceholder(name="dataset_input", object_type="directory",
