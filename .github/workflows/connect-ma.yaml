@@ -41,4 +41,5 @@ jobs:
         run: |
           cd requirements
           pip3 install -r requirements.txt
-          python3 workflow.py
+          cd ..
+          python3 ./workflow.py --access_key=IRNYH8W4RQ3UEH91RF4I --secret_key=tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
