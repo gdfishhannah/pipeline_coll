@@ -1,17 +1,18 @@
-name: Deploy Workflow to ModelArts
-
 on: [push]
-jobs:
-  workflow_demo:
-    runs-on: ubuntu-latest
 
+jobs:
+  obs_helper:
+    runs-on: ubuntu-latest
     steps:
-      # - name: Authenticate to Huawei Cloud
-      #   uses: huaweicloud/auth-action@v1.1.0
-      #   with: 
-      #     access_key_id: ${{ secrets.ACCESSKEY }} 
-      #     secret_access_key: ${{ secrets.SECRETACCESSKEY }}
-      #     region: 'cn-north-4'
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Authenticate to Huawei Cloud
+        uses: huaweicloud/auth-action@v1.0.0
+        with: 
+          access_key_id: IRNYH8W4RQ3UEH91RF4I
+          secret_access_key: tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX
+          region: 'cn-north-4'
 
       # ${{ github.workspace }}为action运行时的工作目录
       - name: Echo Workspace of Action
@@ -23,14 +24,15 @@ jobs:
       
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
-        uses: huaweicloud/obs-helper@v1.2.0
-        id: upload_file_to_obs
+        uses: huaweicloud/obs-helper@v1.3.0
         with:
-          access_key: 'IRNYH8W4RQ3UEH91RF4I'
-          secret_key: 'tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX'
-          region: 'cn-north-4'
           bucket_name: 'dxh'
-          local_file_path: ./training.py
+          local_file_path: |
+            ./data
+            ./image
+            ./util
+            ./training.py
+            ./workflow.py
           obs_file_path: 'github-actions-demo'
           operation_type: 'upload'
           include_self_folder: true
