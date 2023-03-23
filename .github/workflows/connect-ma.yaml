@@ -18,7 +18,7 @@ jobs:
       
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
-        uses: huaweicloud/obs-helper@v1.4.0
+        uses: huaweicloud/obs-helper@v1.2.0
         id: upload_file_to_obs
         with:
           access_key: ${{ secrets.ACCESSKEY }}
