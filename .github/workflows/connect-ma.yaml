@@ -1,7 +1,6 @@
 name: Deploy Workflow to ModelArts
 
-on:[push]
-
+on: [push]
 jobs:
   workflow_demo:
     runs-on: ubuntu-latest
