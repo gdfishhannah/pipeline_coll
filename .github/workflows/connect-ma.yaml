@@ -9,8 +9,8 @@ jobs:
       - name: Authenticate to Huawei Cloud
         uses: huaweicloud/auth-action@v1.0.0
         with: 
-          access_key_id: ${{ secrets.ACCESSKEY }} 
-          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          access_key: ${{ secrets.ACCESSKEY }} 
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: 'cn-north-4'
 
       - name: Echo Workspace of Action
