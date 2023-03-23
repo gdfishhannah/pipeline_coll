@@ -13,8 +13,13 @@ jobs:
       #     secret_access_key: ${{ secrets.SECRETACCESSKEY }}
       #     region: 'cn-north-4'
 
+      # ${{ github.workspace }}为action运行时的工作目录
       - name: Echo Workspace of Action
         run: echo ${{ github.workspace }}
+
+      # ${{ runner.temp }}为运行器临时目录的路径
+      - name: Echo Temporary Directory on the Runner
+        run: echo ${{ runner.temp }}
       
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
