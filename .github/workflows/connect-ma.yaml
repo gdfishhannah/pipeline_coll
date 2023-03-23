@@ -21,8 +21,8 @@ jobs:
         uses: huaweicloud/obs-helper@v1.2.0
         id: upload_file_to_obs
         with:
-          access_key: ${{ secrets.ACCESSKEY }}
-          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          access_key: 'IRNYH8W4RQ3UEH91RF4I'
+          secret_key: 'tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX'
           region: 'cn-north-4'
           bucket_name: 'dxh'
           local_file_path: 'training.py'
