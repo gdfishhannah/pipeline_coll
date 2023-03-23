@@ -1,9 +1,6 @@
 name: Deploy Workflow to ModelArts
 
-on:
-  push:
-    branches:
-      -main
+on:[push]
 
 jobs:
   workflow_demo:
