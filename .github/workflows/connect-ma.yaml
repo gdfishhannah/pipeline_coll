@@ -28,3 +28,4 @@ jobs:
           local_file_path: './'
           obs_file_path: 'github-actions-demo'
           operation_type: 'upload'
+          include_self_folder: true
