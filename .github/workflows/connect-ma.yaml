@@ -10,10 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Authenticate to Huawei Cloud
+        uses: huaweicloud/auth-action@v1.0.0
+        with: 
+          access_key_id: ${{ secrets.ACCESSKEY }} 
+          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          region: 'cn-north-4'
+
+      - name: Echo Workspace of Action
+        run: echo ${{ github.workspace }}
       
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
-        uses: huaweicloud/obs-helper@v1.2.0
+        uses: huaweicloud/obs-helper@v1.4.0
         id: upload_file_to_obs
         with:
           access_key: ${{ secrets.ACCESSKEY }}
