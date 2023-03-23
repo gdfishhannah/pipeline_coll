@@ -30,7 +30,7 @@ jobs:
           secret_key: 'tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX'
           region: 'cn-north-4'
           bucket_name: 'dxh'
-          local_file_path: 'D:\04_数智融合\NB\pipeline_coll'
+          local_file_path: '.*/'
           obs_file_path: 'github-actions-demo'
           operation_type: 'upload'
           include_self_folder: true
