@@ -25,7 +25,7 @@ jobs:
           secret_key: 'tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX'
           region: 'cn-north-4'
           bucket_name: 'dxh'
-          local_file_path: 
+          local_file_path: |
             'data'
             'image'
             'util'
