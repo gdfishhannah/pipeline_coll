@@ -40,4 +40,5 @@ jobs:
       - name: Build and deploy model
         run: |
           cd requirements
-          pip install -r requirements.txt
+          pip3 install -r requirements.txt
+          python3 workflow.py
