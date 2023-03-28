@@ -7,12 +7,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
+      - name: Echo ak
+        run: echo ${{secrets.ACCESSKEY}}
+      
+      - name: Echo sk
+        run: echo: ${{secrets.SECRETACCESSKEY}}
+
       - name: Authenticate to Huawei Cloud
         uses: huaweicloud/auth-action@v1.0.0
         with: 
           access_key_id: ${{secrets.ACCESSKEY}}
-          secret_access_key: ${{secrets.SECRETACCESSKEY}}\
+          secret_access_key: ${{secrets.SECRETACCESSKEY}}
           region: 'cn-north-4'
 
       # ${{ github.workspace }}为action运行时的工作目录
