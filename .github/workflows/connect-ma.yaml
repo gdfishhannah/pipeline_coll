@@ -11,8 +11,8 @@ jobs:
       - name: Authenticate to Huawei Cloud
         uses: huaweicloud/auth-action@v1.0.0
         with: 
-          access_key_id: ${{ secrets.ACCESSKEY }} 
-          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          access_key_id: ${{secrets.ACCESSKEY}}
+          secret_access_key: ${{secrets.SECRETACCESSKEY}}\
           region: 'cn-north-4'
 
       # ${{ github.workspace }}为action运行时的工作目录
@@ -38,11 +38,10 @@ jobs:
           operation_type: 'upload'
           include_self_folder: true
 
-      #
-
+      #安装ModelArts相关sdk依赖，通过sdk执行ModelArts的workflow
       - name: Build and deploy model
         run: |
           cd requirements
           pip3 install -r requirements.txt
           cd ..
-          python3 ./workflow.py --access_key=${{ secrets.ACCESSKEY }}  --secret_key=tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
+          python3 ./workflow.py --access_key=${{secrets.ACCESSKEY}} --secret_key=${{secrets.SECRETACCESSKEY}}\ --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
