@@ -49,4 +49,4 @@ jobs:
           cd requirements
           pip3 install -r requirements.txt
           cd ..
-          python3 ./workflow.py --access_key=${{secrets.ACCESSKEY}} --secret_key=${{secrets.SECRETACCESSKEY}}\ --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
+          python3 ./workflow.py --access_key=${{secrets.ACCESSKEY}} --secret_key=${{secrets.SECRETACCESSKEY}} --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
