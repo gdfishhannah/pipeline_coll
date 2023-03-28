@@ -19,7 +19,7 @@ jobs:
         run: echo ${{ secrets.ACCESSKEY }}
       
       - name: Echo sk
-        run: echo: ${{ secrets.SECRETACCESSKEY }}
+        run: echo ${{ secrets.SECRETACCESSKEY }}
 
       - name: Authenticate to Huawei Cloud
         uses: huaweicloud/auth-action@v1.0.0
