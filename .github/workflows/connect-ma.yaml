@@ -27,8 +27,6 @@ jobs:
           access_key_id: ${{ secrets.ACCESSKEY }}
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: 'cn-north-4'
-
-
       
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
