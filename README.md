@@ -80,6 +80,8 @@ Github Actions是Github的持续集成和持续交付平台，可用于自动执
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: 'cn-north-4'
 ```
+其中【 ${{ secrets.ACCESSKEY }}】为github secrets，需自行在项目中进行配置。
+![structure](./images/github-secrets.png)
 
 华为云OBS上传，参考(https://github.com/marketplace/actions/huawei-cloud-obs-helper)
 ```
