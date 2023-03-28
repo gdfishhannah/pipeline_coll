@@ -68,3 +68,42 @@ Github Actions是Github的持续集成和持续交付平台，可用于自动执
 - training.py：Pytorch官方手写数字识别模型训练代码，来源：[examples/mnist at main · pytorch/examples (github.com)](https://github.com/pytorch/examples/tree/main/mnist)
 
 - workflow.py：ModelArts Workflow编排代码
+
+## Github Actions详解
+
+华为云统一鉴权认证，参考(https://github.com/marketplace/actions/authenticate-to-huawei-cloud)
+```
+      - name: Authenticate to Huawei Cloud
+        uses: huaweicloud/auth-action@v1.0.0
+        with: 
+          access_key_id: ${{ secrets.ACCESSKEY }}
+          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          region: 'cn-north-4'
+```
+
+华为云OBS上传，参考(https://github.com/marketplace/actions/huawei-cloud-obs-helper)
+```
+      - name: Upload To HuaweiCloud OBS
+        uses: huaweicloud/obs-helper@v1.3.0
+        with:
+          bucket_name: 'dxh'
+          local_file_path: |
+            ./data
+            ./image
+            ./util
+            ./training.py
+            ./workflow.py
+          obs_file_path: github-actions-demo
+          operation_type: 'upload'
+          include_self_folder: true
+```
+
+当前ModelArts暂无提供Actions，但我们仍可以在actions执行环境中安装依赖包后，使用SDK编排ModelArts的运行逻辑
+```
+- name: Build and deploy model
+        run: |
+          cd requirements
+          pip3 install -r requirements.txt
+          cd ..
+          python3 ./workflow.py
+```
