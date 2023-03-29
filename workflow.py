@@ -23,7 +23,7 @@ session = Session(access_key=opt.access_key, secret_key=opt.secret_key, project_
 
 # 统一输出目录配置
 output_storage = wf.data.Storage(name="output_storage", description="统一输出目录配置", with_execution_id=True,
-                                 default='{}/{}/cnnorth4/workflow_cicd/'.format(opt.obs_bucket_name, opt.project_name))
+                                 default='{}/{}/workflow_cicd/'.format(opt.obs_bucket_name, opt.project_name))
 # 数据集路径
 data_path = wf.data.OBSPath(obs_path="/{}/{}/data/".format(opt.obs_bucket_name, opt.project_name))
 # 训练输出路径

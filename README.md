@@ -99,6 +99,34 @@ Github Actions是Github的持续集成和持续交付平台，可用于自动执
           operation_type: 'upload'
           include_self_folder: true
 ```
+构建自定义镜像，并上传至华为云镜像管理服务
+```
+      #构建ModelArts自定义镜像，参考https://support.huaweicloud.com/docker-modelarts/develop-modelarts-0097.html
+      - name: Login to SWR
+        uses: huaweicloud/swr-login@v2.1.0
+        with:
+          access-key-id: ${{ secrets.ACCESSKEY }}
+          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
+          region: ${{ env.REGION_ID }}
+
+      - name: Build ,Tag and Push Image to Huawei Cloud SWR
+        env:
+          SWR_REGISTRY: swr.${{ env.REGION_ID }}.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          cd docker-image
+          wget -q https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh
+          wget -q https://download.pytorch.org/whl/cu102/torch-1.9.1%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          wget -q https://download.pytorch.org/whl/cu102/torchaudio-0.10.2%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          wget -q https://download.pytorch.org/whl/cu102/torchvision-0.11.0%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          docker build . -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+          cd ..
+      
+```
 
 当前ModelArts暂无提供Actions，但我们仍可以在actions执行环境中安装依赖包后，使用SDK编排ModelArts的运行逻辑
 ```
