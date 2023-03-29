@@ -1,6 +1,11 @@
 name: github actions with modelarts demo
 on: [push]
 
+env:
+  REGION_ID: 'cn-north-4'
+  SWR_ORGANIZATION: 'default'
+  IMAGE_NAME: 'modelarts-pytorch'
+
 jobs:
   connect_to_hwcloud:
     runs-on: ubuntu-20.04
@@ -21,7 +26,7 @@ jobs:
         with: 
           access_key_id: ${{ secrets.ACCESSKEY }}
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
-          region: 'cn-north-4'
+          region: ${{ env.REGION_ID}}
  
       # 上传文件到华为云OBS
       - name: Upload To HuaweiCloud OBS
@@ -36,6 +41,35 @@ jobs:
           obs_file_path: github-actions-demo
           operation_type: 'upload'
           include_self_folder: true
+
+      #构建ModelArts自定义镜像
+      - name: Login to SWR
+        uses: huaweicloud/swr-login@v2.1.0
+        with:
+          access-key-id: ${{ secrets.ACCESSKEY }}
+          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
+          region: ${{ env.REGION_ID }}
+
+      - name: Build Image
+        run: |
+          cd docker-image
+          wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh
+          wget https://download.pytorch.org/whl/cu102/torch-1.9.1%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          wget https://download.pytorch.org/whl/cu102/torchaudio-0.10.2%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          wget https://download.pytorch.org/whl/cu102/torchvision-0.11.0%2Bcu102-cp37-cp37m-linux_x86_64.whl
+          ducker build . -t pytorch:1.8.1-cuda10.2
+      
+      - name: Tag and Push Image to Huawei Cloud SWR
+        id: push-image
+        env:
+          SWR_REGISTRY: swr.${{ env.REGION_ID }}.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ github.sha }} # 镜像版本,这里是使用代码commitid sha值， 用户可以修改成自己需要的。
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
 
       #安装ModelArts相关sdk依赖，通过sdk执行ModelArts的workflow
       - name: Build and deploy model
