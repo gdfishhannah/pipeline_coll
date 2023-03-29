@@ -69,7 +69,7 @@ model_registration = wf.steps.ModelStep(
 )
 
 # workflow定义
-workflow = wf.Workflow(name="github-actions-wf-demo",
+workflow = wf.Workflow(name="github-actions-wf-demo-",
                        desc="This is a demo workflow for continuous training",
                        steps=[job_step, model_registration],
                        session=session,
