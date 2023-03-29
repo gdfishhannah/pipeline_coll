@@ -5,6 +5,9 @@ env:
   REGION_ID: 'cn-north-4'
   SWR_ORGANIZATION: 'default'
   IMAGE_NAME: 'modelarts-pytorch'
+  PROJECT_ID: '07ccb07b350010232fb6c00b03d8c78e'
+  OBS_PATH: 'dxh'
+  OBS_FILE_NAME: 'github-actions-demo'
 
 jobs:
   connect_to_hwcloud:
@@ -38,7 +41,7 @@ jobs:
             ./util
             ./training.py
             ./workflow.py
-          obs_file_path: github-actions-demo
+          obs_file_path: ${{ env.OBS_FILE_NAME }}
           operation_type: 'upload'
           include_self_folder: true
 
@@ -52,14 +55,14 @@ jobs:
 
       - name: Build Image
         run: |
-          curl -fsSL get.docker.com -o get-docker.sh
-          sh get-docker.sh
-          cd docker-image
+          # curl -fsSL get.docker.com -o get-docker.sh
+          # sh get-docker.sh
+          # cd docker-image
           wget -q https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh
           wget -q https://download.pytorch.org/whl/cu102/torch-1.9.1%2Bcu102-cp37-cp37m-linux_x86_64.whl
           wget -q https://download.pytorch.org/whl/cu102/torchaudio-0.10.2%2Bcu102-cp37-cp37m-linux_x86_64.whl
           wget -q https://download.pytorch.org/whl/cu102/torchvision-0.11.0%2Bcu102-cp37-cp37m-linux_x86_64.whl
-          ducker build . -t pytorch:1.8.1-cuda10.2
+          docker build . -t pytorch:1.8.1-cuda10.2
           cd ..
       
       - name: Tag and Push Image to Huawei Cloud SWR
@@ -80,4 +83,4 @@ jobs:
           cd requirements
           pip3 install -r requirements.txt
           cd ..
-          python3 ./workflow.py --access_key=${{secrets.ACCESSKEY}} --secret_key=${{secrets.SECRETACCESSKEY}} --project_id=07ccb07b350010232fb6c00b03d8c78e --obs_bucket_name=dxh --project_name=github-actions-demo
+          python3 ./workflow.py --access_key=${{secrets.ACCESSKEY}} --secret_key=${{secrets.SECRETACCESSKEY}} --project_id=${{ env.PROJECT_ID }} --obs_bucket_name=${{ env.OBS_PATH }} --project_name=${{ env.OBS_FILE_NAME }}
