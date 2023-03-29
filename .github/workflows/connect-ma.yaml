@@ -30,7 +30,6 @@ jobs:
           bucket_name: 'dxh'
           local_file_path: |
             ./data
-            ./image
             ./util
             ./training.py
             ./workflow.py
