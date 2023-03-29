@@ -4,7 +4,8 @@ on: [push]
 env:
   REGION_ID: 'cn-north-4'
   SWR_ORGANIZATION: 'default'
-  IMAGE_NAME: 'modelarts-pytorch'
+  IMAGE_NAME: 'pytorch'
+  IMAGE_TAG: '1.8.1-cuda10.2'
   PROJECT_ID: '07ccb07b350010232fb6c00b03d8c78e'
   OBS_PATH: 'dxh'
   OBS_FILE_NAME: 'github-actions-demo'
@@ -53,27 +54,24 @@ jobs:
           access-key-secret: ${{ secrets.SECRETACCESSKEY }}
           region: ${{ env.REGION_ID }}
 
-      - name: Build Image
+      - name: Build ,Tag and Push Image to Huawei Cloud SWR
+        env:
+          SWR_REGISTRY: swr.${{ env.REGION_ID }}.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
         run: |
           cd docker-image
           wget -q https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh
           wget -q https://download.pytorch.org/whl/cu102/torch-1.9.1%2Bcu102-cp37-cp37m-linux_x86_64.whl
           wget -q https://download.pytorch.org/whl/cu102/torchaudio-0.10.2%2Bcu102-cp37-cp37m-linux_x86_64.whl
           wget -q https://download.pytorch.org/whl/cu102/torchvision-0.11.0%2Bcu102-cp37-cp37m-linux_x86_64.whl
-          docker build . -t pytorch:1.8.1-cuda10.2
-          cd ..
-      
-      - name: Tag and Push Image to Huawei Cloud SWR
-        id: push-image
-        env:
-          SWR_REGISTRY: swr.${{ env.REGION_ID }}.myhuaweicloud.com
-          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
-          IMAGE_TAG: ${{ github.sha }} # 镜像版本,这里是使用代码commitid sha值， 用户可以修改成自己需要的。
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-        run: |
-          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+          docker build . -t $IMAGE_NAME:$IMAGE_TAG
           docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
           echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+          cd ..
+      
+
 
       #安装ModelArts相关sdk依赖，通过sdk执行ModelArts的workflow
       - name: Build and deploy model
